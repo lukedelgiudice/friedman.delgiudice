@@ -15,5 +15,5 @@ You can install the `friedman.delgiudice` package from GitHub using the `devtool
 install.packages("devtools")
 
 # Install friedman.delgiudice from GitHub
-devtools::install_github("your-username/friedman.delgiudice")
+devtools::install_github("lukedelgiudice/friedman.delgiudice")
 ```
