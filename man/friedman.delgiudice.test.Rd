@@ -5,13 +5,13 @@
 Performs the Friedman Del Giudice test with replications for comparing multiple, replicated treatments across blocks.
 }
 \usage{
-friedman.delgiudice.test(y, treatments, blocks, replications = 1, alpha = 0.05)
+friedman.delgiudice.test(y, treatments, blocks, replications = 0, alpha = 0.05)
 }
 \arguments{
   \item{y}{A numeric vector of data values in order of block first and treatment second.}
   \item{treatments}{The number of treatments.}
   \item{blocks}{The number of blocks.}
-  \item{replications}{The number of replications (default is 1).}
+  \item{replications}{The number of replications (default is 0).}
   \item{alpha}{The significance level for the test (default is 0.05).}
   \item{...}{Additional arguments to be passed to the function.}
 }
