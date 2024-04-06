@@ -12,7 +12,7 @@ friedman.delgiudice.test <- function(y, treatments, blocks, replications = 0, al
     stop("'y' must have data")
   }
 
-  if (any(c(r, t, b)) <= 0L) {
+  if (any(c(r, t, b) <= 0L)) {
     stop("'treatments' 'blocks', and 'replications' must be valid inputs")
   }
 
@@ -44,17 +44,17 @@ friedman.delgiudice.test <- function(y, treatments, blocks, replications = 0, al
     p.value = p_value,
     method = "Friedman Del Giudice Test",
     data.name = deparse1(substitute(y)),
+    alpha = alpha,
     conclusion = ifelse(p_value < alpha, "reject", "fail to reject")
   )
 
-  class(result) <- "htest"
+  class(result) <- "friedman_test"
   return(result)
 }
 
-print.htest <- function(x, ...) {
+print.friedman_test <- function(x, ...) {
   cat("Friedman Del Giudice Test\n\n")
   cat("data:  ", x$data.name, "\n")
-  cat("Friedman chi-squared = ", round(x$statistic, 4), ", df = ", x$parameter, ", p-value = ", round(x$p.value, 4), "\n\n", sep = "")
-  cat("Conclusion: ", ifelse(x$conclusion == "reject", "Reject", "Fail to reject"), " the null hypothesis at alpha = ", alpha, "\n", sep = "")
+  cat("Friedman chi-squared = ", round(x$statistic, 4), ", df = ", x$parameter, ", p-value = ", format.pval(x$p.value, digits = 4), "\n\n", sep = "")
+  cat("Conclusion: ", ifelse(x$conclusion == "reject", "Reject", "Fail to reject"), " the null hypothesis at alpha = ", x$alpha, "\n", sep = "")
 }
-
