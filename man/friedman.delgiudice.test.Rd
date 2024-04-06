@@ -1,113 +1,50 @@
 \name{friedman.delgiudice.test}
 \alias{friedman.delgiudice.test}
-%- Also NEED an '\alias' for EACH other topic documented here.
-\title{
-place holder
-}
+\title{Friedman Del Giudice Test}
 \description{
-%%  ~~ A concise (1-5 lines) description of what the function does. ~~
+Performs the Friedman Del Giudice test with replications for comparing multiple, replicated treatments across blocks.
 }
 \usage{
-friedman.delgiudice.test(y, treatments, blocks, replications = 0, alpha = 0.05, ...)
+friedman.delgiudice.test(y, treatments, blocks, replications = 1, alpha = 0.05)
 }
-%- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{y}{
-%%     ~~Describe \code{y} here~~
-}
-  \item{treatments}{
-%%     ~~Describe \code{treatments} here~~
-}
-  \item{blocks}{
-%%     ~~Describe \code{blocks} here~~
-}
-  \item{replications}{
-%%     ~~Describe \code{replications} here~~
-}
-  \item{alpha}{
-%%     ~~Describe \code{alpha} here~~
-}
-  \item{\dots}{
-%%     ~~Describe \code{\dots} here~~
-}
+  \item{y}{A numeric vector of data values in order of block first and treatment second.}
+  \item{treatments}{The number of treatments.}
+  \item{blocks}{The number of blocks.}
+  \item{replications}{The number of replications (default is 1).}
+  \item{alpha}{The significance level for the test (default is 0.05).}
+  \item{...}{Additional arguments to be passed to the function.}
 }
 \details{
-%%  ~~ If necessary, more details than the description above ~~
+The Friedman Del Giudice test is a non-parametric test that extends the Friedman test by allowing for replication within each block-treatment combination.
 }
 \value{
-%%  ~Describe the value returned
-%%  If it is a LIST, use
-%%  \item{comp1 }{Description of 'comp1'}
-%%  \item{comp2 }{Description of 'comp2'}
-%% ...
+A list with the following components:
+\item{statistic}{The test statistic.}
+\item{parameter}{The degrees of freedom for the test.}
+\item{p.value}{The p-value for the test.}
+\item{method}{A character string indicating the name of the test.}
+\item{data.name}{A character string giving the name of the data argument.}
+\item{conclusion}{A character string indicating whether to "reject" or "fail to reject" the null hypothesis based on the p-value and the specified significance level.}
 }
 \references{
-%% ~put references to the literature/web site here ~
+Spotify & Sleep
 }
 \author{
-%%  ~~who you are~~
+Luke Del Giudice
 }
-\note{
-%%  ~~further notes~~
-}
-
-%% ~Make other sections like Warning with \section{Warning }{....} ~
-
 \seealso{
-%% ~~objects to See Also as \code{\link{help}}, ~~~
+\code{\link{friedman.test}} for the Friedman test without replications.
 }
 \examples{
-##---- Should be DIRECTLY executable !! ----
-##-- ==>  Define data, use random,
-##--	or do  help(data=index)  for the standard data sets.
+# Generate example data
+y <- c(3, 4, 5, 2, 1, 6, 4, 3, 5, 1, 2, 6, 5, 4, 3, 2, 1, 6)
+treatments <- 3
+blocks <- 2
+replications <- 2
 
-## The function is currently defined as
-function (y, treatments, blocks, replications = 0, alpha = 0.05,
-    ...)
-{
-    t <- treatments
-    b <- blocks
-    r <- replications + 1
-    if (anyNA(y)) {
-        stop("NA's are not allowed in 'y'")
-    }
-    if (length(y) <= 0) {
-        stop("'y' must have data")
-    }
-    if (any(c(r, t, b)) <= 0L) {
-        stop("'treatments' 'blocks', and 'replications' must be valid inputs")
-    }
-    if (length(y) != (t * b * r)) {
-        stop("dimensions of the given data and arguments don't match")
-    }
-    blockdf <- data.frame(y, ncol = (t * r), byrow = T)
-    rankdf <- as.data.frame(t(apply(blockdf, MARGIN = 1, rank)))
-    average_treatment_ranks <- numeric(t)
-    get_indices <- function(subset_num) {
-        start_index <- (subset_num - 1) * r + 1
-        end_index <- start_index + r - 1
-        return(start_index:end_index)
-    }
-    for (i in 1:t) {
-        average_treatment_ranks[i] <- mean(unlist(rankdf[, get_indices(i)]))
-    }
-    test_statistic <- (12 * b)/((t * r) * ((t * r) + 1)) * sum((average_treatment_ranks -
-        ((t + 1)/2))^2)
-    p_value <- pchisq(test_statistic, t - 1, lower.tail = FALSE)
-    result <- list(statistic = test_statistic, parameter = t -
-        1, p.value = p_value, method = "Friedman Del Giudice Test",
-        data.name = deparse1(substitute(y)), conclusion = ifelse(p_value <
-            alpha, "reject", "fail to reject"))
-    class(result) <- "htest"
-    return(result)
-  }
+# Perform the Friedman Del Giudice test
+result <- friedman.delgiudice.test(y, treatments, blocks, replications)
+print(result)
 }
-% Add one or more standard keywords, see file 'KEYWORDS' in the
-% R documentation directory (show via RShowDoc("KEYWORDS")):
-% \keyword{ ~kwd1 }
-% \keyword{ ~kwd2 }
-% Use only one keyword per line.
-% For non-standard keywords, use \concept instead of \keyword:
-% \concept{ ~cpt1 }
-% \concept{ ~cpt2 }
-% Use only one concept per line.
+\keyword{htest}
